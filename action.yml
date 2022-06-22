@@ -29,7 +29,7 @@ runs:
       id: test-run-id
       run: echo "::set-output name=UUID::$(uuidgen | tr A-Z a-z)"
       shell: bash
-    - run: npm i @replayio/cypress@">=0.1.0"
+    - run: npm i @replayio/cypress@">=0.2.0"
       shell: sh
     - run: ${{ inputs.command }} --browser "${{ inputs.browser }}"
       shell: sh
