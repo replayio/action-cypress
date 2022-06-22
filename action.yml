@@ -1,0 +1,57 @@
+name: Replay Cypress
+author: Replay.io
+description: Run and record Cypress tests with Replay
+inputs:
+  working-directory:
+    description: "Relative path to app"
+    default: "."
+  command:
+    description: "Command to run tests"
+    default: npx cypress run
+  browser:
+    description: "Replay Browser to use"
+    default: Replay Firefox
+  issue-number:
+    description: "Pull Request on which to comment results"
+  apiKey:
+    required: true
+    description: "Replay.io API Key"
+  public:
+    description: "Makes the uploaded replay viewable by everyone"
+    default: false
+  upload-all:
+    description: "Upload all recordings instead of only recordings of failed tests"
+    default: false
+runs:
+  using: composite
+  steps:
+    - name: Generate Test Run ID
+      id: test-run-id
+      run: echo "::set-output name=UUID::$(uuidgen | tr A-Z a-z)"
+      shell: bash
+    - run: npm i @replayio/cypress@">=0.1.0"
+      shell: sh
+    - run: ${{ inputs.command }} --browser "${{ inputs.browser }}"
+      shell: sh
+      working-directory: ${{ inputs.working-directory }}
+      env:
+        RECORD_REPLAY_TEST_RUN_ID: ${{ steps.test-run-id.outputs.UUID }}
+    - name: 'Upload Recordings'
+      id: 'upload-recordings'
+      uses: replayio/action-upload@v0.2.5
+      if: ${{ always() }}
+      with:
+        apiKey: ${{ inputs.apiKey }}
+        public: ${{ inputs.public }}
+        filter: ${{ !inputs.upload-all && 'function($v) { $v.metadata.testStatus = "failed" and $v.status = "onDisk" }' || '' }}
+      env:
+        RECORD_REPLAY_API_KEY: ${{ inputs.apiKey }}
+    - name: 'Comment PR'
+      uses: replayio/action-comment@v0.1.0
+      if: ${{ always() }}
+      with:
+        api-key: ${{ inputs.apiKey }}
+        issue-number: ${{ github.event.pull_request.number }}
+        recordings: ${{ steps.upload-recordings.outputs.recordings }}
+        test-run-id: ${{ steps.test-run-id.outputs.UUID }}
+
