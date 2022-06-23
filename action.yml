@@ -2,26 +2,26 @@ name: Replay Cypress
 author: Replay.io
 description: Run and record Cypress tests with Replay
 inputs:
-  working-directory:
-    description: "Relative path to app"
-    default: "."
-  command:
-    description: "Command to run tests"
-    default: npx cypress run
-  browser:
-    description: "Replay Browser to use"
-    default: Replay Firefox
-  issue-number:
-    description: "Pull Request on which to comment results"
   apiKey:
     required: true
     description: "Replay.io API Key"
+  browser:
+    description: "Replay Browser to use"
+    default: Replay Firefox
+  command:
+    description: "Command to run tests"
+    default: npx cypress run
+  issue-number:
+    description: "Pull Request on which to comment results"
   public:
     description: "Makes the uploaded replay viewable by everyone"
     default: false
   upload-all:
     description: "Upload all recordings instead of only recordings of failed tests"
     default: false
+  working-directory:
+    description: "Relative path to app"
+    default: "."
 runs:
   using: composite
   steps:
