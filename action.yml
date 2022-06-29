@@ -47,7 +47,7 @@ runs:
         # CYPRESS_NO_COMMAND_LOG: 1
     - name: 'Upload Recordings'
       id: 'upload-recordings'
-      uses: replayio/action-upload@v0.2.5
+      uses: replayio/action-upload@v0.2.6
       if: ${{ always() }}
       with:
         apiKey: ${{ inputs.apiKey }}
