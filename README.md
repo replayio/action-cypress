@@ -10,7 +10,7 @@
 4. Add the configuration below to your existing workflow (or start a new one with the [complete example](#complete-workflow-example) below)
 
 ```yaml
-- uses: replayio/action-cypress@v0.1.0
+- uses: replayio/action-cypress@v0.1.1
   with:
     apiKey: ${{ secrets.RECORD_REPLAY_API_KEY }}
     issue-number: ${{ github.event.pull_request.number }}
@@ -64,7 +64,7 @@ jobs:
           path: ~/.cache/Cypress
           key: my-cache-${{ runner.os }}-${{ hashFiles('package-lock.json') }}
 
-      - uses: replayio/action-cypress@v0.1.0
+      - uses: replayio/action-cypress@v0.1.1
         with:
           # An API key (usually a Team API Key) to use to upload replays.
           # Configure this via GitHub repo settings.
