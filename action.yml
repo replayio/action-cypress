@@ -47,7 +47,7 @@ runs:
         # CYPRESS_NO_COMMAND_LOG: 1
     - name: 'Upload Recordings'
       id: 'upload-recordings'
-      uses: replayio/action-upload@v0.2.6
+      uses: replayio/action-upload@v0.3.0
       if: ${{ always() }}
       with:
         apiKey: ${{ inputs.apiKey }}
@@ -56,11 +56,11 @@ runs:
       env:
         RECORD_REPLAY_API_KEY: ${{ inputs.apiKey }}
     - name: 'Comment PR'
-      uses: replayio/action-comment@v0.1.1
+      uses: replayio/action-comment@v0.2.0
       if: ${{ always() }}
       with:
         api-key: ${{ inputs.apiKey }}
         issue-number: ${{ inputs.issue-number }}
-        recordings: ${{ steps.upload-recordings.outputs.recordings }}
+        recordings-path: ${{ steps.upload-recordings.outputs.recordings-path }}
         test-run-id: ${{ steps.test-run-id.outputs.UUID }}
 
