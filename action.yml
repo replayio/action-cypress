@@ -27,8 +27,7 @@ runs:
   steps:
     - name: Generate Test Run ID
       id: test-run-id
-      run: echo "::set-output name=UUID::$(uuidgen | tr A-Z a-z)"
-      shell: bash
+      uses: filipstefansson/uuid-action@v1.1
     - name: Generate metadata file
       id: metadata-file
       run: echo "::set-output name=TMP_FILE::$(mktemp)"
@@ -39,7 +38,7 @@ runs:
       shell: sh
       working-directory: ${{ inputs.working-directory }}
       env:
-        RECORD_REPLAY_TEST_RUN_ID: ${{ steps.test-run-id.outputs.UUID }}
+        RECORD_REPLAY_TEST_RUN_ID: ${{ steps.test-run-id.outputs.uuid }}
         RECORD_ALL_CONTENT: 1
         RECORD_REPLAY_METADATA_FILE: ${{ steps.metadata-file.outputs.TMP_FILE }}
         # TODO [ryanjduffy]: Include this later when we want to hide the command
@@ -62,5 +61,5 @@ runs:
         api-key: ${{ inputs.apiKey }}
         issue-number: ${{ inputs.issue-number }}
         recordings-path: ${{ steps.upload-recordings.outputs.recordings-path }}
-        test-run-id: ${{ steps.test-run-id.outputs.UUID }}
+        test-run-id: ${{ steps.test-run-id.outputs.uuid }}
 
