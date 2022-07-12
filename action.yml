@@ -39,8 +39,6 @@ runs:
       id: metadata-file
       run: echo "::set-output name=TMP_FILE::$(mktemp)"
       shell: bash
-    - run: npm i --legacy-peer-deps @replayio/cypress@">=0.2.0"
-      shell: sh
     - run: ${{ inputs.command }} --browser "${{ inputs.browser }}"
       shell: sh
       working-directory: ${{ inputs.working-directory }}
