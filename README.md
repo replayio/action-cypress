@@ -17,7 +17,7 @@ The action:
 
 ## Usage
 
-First, add `replayio/cypress` and configure using instructions in the [Recording Automated Tests guide](https://docs.replay.io/docs/configuring-cypress-30fd38c1ed8047a2be82ae436e0bbb15).
+First, add `@replayio/cypress` and configure using instructions in the [Recording Automated Tests guide](https://docs.replay.io/docs/configuring-cypress-30fd38c1ed8047a2be82ae436e0bbb15).
 
 Then: 
 
@@ -25,12 +25,12 @@ Then:
 2. Create a [Team API key](https://docs.replay.io/docs/setting-up-a-team-f5bd9ee853814d6f84e23fb535066199#4913df9eb7384a94a23ccbf335189370) (Personal API keys can be used, but have a limit of 10 recordings)
 3. Store the API key as a [GitHub Repository Secret](https://docs.github.com/en/actions/security-guides/encrypted-secrets#creating-encrypted-secrets-for-a-repository) named `RECORD_REPLAY_API_KEY`
 4. Add the configuration below to your existing workflow (or start a new one with the [complete example](#complete-workflow-example) below)
+5. Install the [Replay GitHub App](https://github.com/apps/replay-io) to add comments to your Pull Requests with links to replays of your tests
 
 ```yaml
-- uses: replayio/action-cypress@v0.1.3
+- uses: replayio/action-cypress@v0.2.0
   with:
-    apiKey: ${{ secrets.RECORD_REPLAY_API_KEY }}
-    issue-number: ${{ github.event.pull_request.number }}
+    api-key: ${{ secrets.RECORD_REPLAY_API_KEY }}
     browser: 'Replay Firefox'
 ```
 
@@ -40,10 +40,9 @@ If no browser is passed, the Cypress default Electron is used.
 
 Required | Name | Description | Default
 -------- | ---- | ----------- | -------
-:white_check_mark: | `apiKey` | The Replay API Key used to upload recordings
+:white_check_mark: | `api-key` | The Replay API Key used to upload recordings
 &nbsp; | `browser` | The Replay browser to use (either `Replay Firefox` or `Replay Chromium`)
 &nbsp; | `command` | The command to run your cypress tests | `npx cypress run`
-&nbsp; | `issue-number` | The number of the pull request to comment with failed test links | 
 &nbsp; | `public` | When true, make replays public on upload | `false`
 &nbsp; | `upload-all` | Upload all recordings instead of only recordings of failed tests | `false`
 &nbsp; | `working-directory` | The relative working directory for the app | `.`
@@ -83,18 +82,15 @@ jobs:
           path: ~/.cache/Cypress
           key: my-cache-${{ runner.os }}-${{ hashFiles('package-lock.json') }}
 
-      - uses: replayio/action-cypress@v0.1.3
+      - uses: replayio/action-cypress@v0.2.0
         with:
           # An API key (usually a Team API Key) to use to upload replays.
           # Configure this via GitHub repo settings.
-          apiKey: ${{ secrets.RECORD_REPLAY_API_KEY }}
+          api-key: ${{ secrets.RECORD_REPLAY_API_KEY }}
           # The Replay browser to use: 'Replay Firefox' or 'Replay Chromium'
           browser: 'Replay Firefox'
           # An optional command to run your tests.
           command: npm run test:e2e -- --
-          # When set, the action will comment on the PR with links to
-          # replays of any failed tests.
-          issue-number: ${{ github.event.pull_request.number }}
           # When true, replays will be accessible to anyone with the link.
           # This is useful for open source projects that want to collaborate
           # with external users.
