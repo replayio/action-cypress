@@ -50,11 +50,9 @@ runs:
         # CYPRESS_NO_COMMAND_LOG: 1
     - name: "Upload Recordings"
       id: "upload-recordings"
-      uses: replayio/action-upload@v0.4.2
+      uses: replayio/action-upload@v0.4.3
       if: ${{ always() }}
       with:
         api-key: ${{ inputs.api-key }}
         public: ${{ inputs.public }}
         filter: ${{ !inputs.upload-all && 'function($v) { $v.metadata.test.result = "failed"}' || 'function($v) { $v.metadata.test.result }' }}
-      env:
-        RECORD_REPLAY_API_KEY: ${{ inputs.api-key }}
