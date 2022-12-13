@@ -28,7 +28,7 @@ Then:
 5. Install the [Replay GitHub App](https://github.com/apps/replay-io) to add comments to your Pull Requests with links to replays of your tests
 
 ```yaml
-- uses: replayio/action-cypress@v0.2.3
+- uses: replayio/action-cypress@v0.2.5
   with:
     api-key: ${{ secrets.RECORD_REPLAY_API_KEY }}
     browser: 'Replay Firefox'
@@ -82,13 +82,13 @@ jobs:
           path: ~/.cache/Cypress
           key: my-cache-${{ runner.os }}-${{ hashFiles('package-lock.json') }}
 
-      - uses: replayio/action-cypress@v0.2.3
+      - uses: replayio/action-cypress@v0.2.5
         with:
           # An API key (usually a Team API Key) to use to upload replays.
           # Configure this via GitHub repo settings.
           api-key: ${{ secrets.RECORD_REPLAY_API_KEY }}
           # The Replay browser to use: 'Replay Firefox' or 'Replay Chromium'
-          browser: 'Replay Firefox'
+          browser: 'Replay Chromium'
           # An optional command to run your tests.
           command: npm run test:e2e -- --
           # When true, replays will be accessible to anyone with the link.
