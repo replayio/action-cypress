@@ -35,7 +35,7 @@ runs:
           return require(require('path').join(process.env.GITHUB_ACTION_PATH, 'node_modules', 'uuid')).v4()
     - name: Generate metadata file
       id: metadata-file
-      run: echo "::set-output name=TMP_FILE::$(mktemp)"
+      run: echo "TMP_FILE=$(mktemp)" >> $GITHUB_OUTPUT
       shell: bash
     - run: ${{ inputs.command }} --browser "${{ inputs.browser }}"
       shell: sh
