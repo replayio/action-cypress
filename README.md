@@ -31,17 +31,20 @@ Then:
 - uses: replayio/action-cypress@v0.2.7
   with:
     api-key: ${{ secrets.RECORD_REPLAY_API_KEY }}
-    browser: 'Replay Firefox'
+    browser: 'replay-firefox'
 ```
 
 If no browser is passed, the Cypress default Electron is used.
+
+> **Note:**
+> If you're using `@replayio/cypress` version 0.4.15 or earlier, use `Replay Firefox` or `Replay Chromium` for the browser name
 
 ## Arguments
 
 Required | Name | Description | Default
 -------- | ---- | ----------- | -------
 :white_check_mark: | `api-key` | The Replay API Key used to upload recordings
-&nbsp; | `browser` | The Replay browser to use (either `Replay Firefox` or `Replay Chromium`)
+&nbsp; | `browser` | The Replay browser to use (either `replay-firefox` or `replay-chromium`)
 &nbsp; | `command` | The command to run your cypress tests | `npx cypress run`
 &nbsp; | `public` | When true, make replays public on upload | `false`
 &nbsp; | `upload-all` | Upload all recordings instead of only recordings of failed tests | `false`
@@ -87,8 +90,8 @@ jobs:
           # An API key (usually a Team API Key) to use to upload replays.
           # Configure this via GitHub repo settings.
           api-key: ${{ secrets.RECORD_REPLAY_API_KEY }}
-          # The Replay browser to use: 'Replay Firefox' or 'Replay Chromium'
-          browser: 'Replay Chromium'
+          # The Replay browser to use: 'replay-firefox' or 'replay-chromium'
+          browser: 'replay-chromium'
           # An optional command to run your tests.
           command: npm run test:e2e -- --
           # When true, replays will be accessible to anyone with the link.
