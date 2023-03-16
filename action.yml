@@ -20,6 +20,8 @@ inputs:
   working-directory:
     description: "Relative path to app"
     default: "."
+  test-run-id:
+    description: "UUID used to group tests into a run"
 runs:
   using: composite
   steps:
@@ -32,7 +34,13 @@ runs:
       with:
         result-encoding: string
         script: |
-          return require(require('path').join(process.env.GITHUB_ACTION_PATH, 'node_modules', 'uuid')).v4()
+          const uuid = require(require('path').join(process.env.GITHUB_ACTION_PATH, 'node_modules', 'uuid'));
+          let value = "${{ inputs.test-run-id }}";
+          if (!uuid.validate(value)) {
+            console.error("test-run-id was invalid. Generating a new value.");
+            value = uuid.v4();
+          }
+          return value;
     - name: Generate metadata file
       id: metadata-file
       run: echo "TMP_FILE=$(mktemp)" >> $GITHUB_OUTPUT

@@ -49,6 +49,7 @@ Required | Name | Description | Default
 &nbsp; | `public` | When true, make replays public on upload | `false`
 &nbsp; | `upload-all` | Upload all recordings instead of only recordings of failed tests | `false`
 &nbsp; | `working-directory` | The relative working directory for the app | `.`
+&nbsp; | `test-run-id` | Uses the provided UUID to group the tests instead of generating its own.  | `.`
 
 > **Note:** This action appends arguments to your `command` to configure a
 > custom reporter. If you're using a command like `npm run cy:run` to run your
@@ -64,9 +65,17 @@ on:
   pull_request:
 
 jobs:
+  test-run-id:
+    runs-on: ubuntu-latest
+    outputs:
+      testRunId: ${{ steps.testRunId.outputs.testRunId }}
+    steps:
+      - id: testRunId
+        run: echo testRunId=$(npx uuid) >> "$GITHUB_OUTPUT"
   test:
     name: Cypress tests
     runs-on: ubuntu-latest
+    needs: test-run-id
     steps:
 
       - name: Checkout
@@ -103,4 +112,7 @@ jobs:
           # An optional working directory which is useful if the project being
           # tested resides in a subdirectory of the repository
           working-directory: .
+          # An optional UUID used to group tests in replay which may
+          # be useful when running across runners or in a matrix
+          test-run-id: ${{ needs.test-run-id.outputs.testRunId }}
 ```
