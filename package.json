@@ -1,6 +1,6 @@
 {
   "name": "action-cypress",
-  "version": "0.2.7",
+  "version": "0.2.8",
   "description": "Run and record Cypress tests with Replay",
   "main": "index.js",
   "scripts": {
