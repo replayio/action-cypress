@@ -22,6 +22,9 @@ inputs:
     default: "."
   test-run-id:
     description: "UUID used to group tests into a run"
+  include-summary:
+    description: "Display links to uploaded replays on the workflow summary page"
+    default: true
 runs:
   using: composite
   steps:
@@ -58,9 +61,10 @@ runs:
         # CYPRESS_NO_COMMAND_LOG: 1
     - name: "Upload Recordings"
       id: "upload-recordings"
-      uses: replayio/action-upload@v0.4.7
+      uses: replayio/action-upload@v0.5.0
       if: ${{ always() }}
       with:
         api-key: ${{ inputs.api-key }}
         public: ${{ inputs.public }}
+        include-summary: ${{ inputs.include-summary }}
         filter: ${{ inputs.upload-all == 'true' && 'function($v) { $v.metadata.test.result }' || 'function($v) { $v.metadata.test.result = "failed" }' }}
