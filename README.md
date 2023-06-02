@@ -10,16 +10,16 @@ Using `action-cypress` in your GitHub Actions workflow is the easiest way to get
 
 The action:
 
-* Ensures Replay Browsers are installed on the CI machine
-* Runs your tests with the browser specified
-* Uploads replays from the test run to the team for the given API key
-* Comments on the initiating pull request with links to the test run and replays
+- Ensures Replay Browsers are installed on the CI machine
+- Runs your tests with the browser specified
+- Uploads replays from the test run to the team for the given API key
+- Comments on the initiating pull request with links to the test run and replays
 
 ## Usage
 
 First, add `@replayio/cypress` and configure using instructions in the [Recording Automated Tests guide](https://docs.replay.io/docs/configuring-cypress-30fd38c1ed8047a2be82ae436e0bbb15).
 
-Then: 
+Then:
 
 1. Log into [app.replay.io](https://app.replay.io)
 2. Create a [Team API key](https://docs.replay.io/docs/setting-up-a-team-f5bd9ee853814d6f84e23fb535066199#4913df9eb7384a94a23ccbf335189370) (Personal API keys can be used, but have a limit of 10 recordings)
@@ -28,10 +28,10 @@ Then:
 5. Install the [Replay GitHub App](https://github.com/apps/replay-io) to add comments to your Pull Requests with links to replays of your tests
 
 ```yaml
-- uses: replayio/action-cypress@v0.2.7
+- uses: replayio/action-cypress@v0.3.0
   with:
     api-key: ${{ secrets.RECORD_REPLAY_API_KEY }}
-    browser: 'replay-firefox'
+    browser: "replay-firefox"
 ```
 
 If no browser is passed, the Cypress default Electron is used.
@@ -41,15 +41,15 @@ If no browser is passed, the Cypress default Electron is used.
 
 ## Arguments
 
-Required | Name | Description | Default
--------- | ---- | ----------- | -------
-:white_check_mark: | `api-key` | The Replay API Key used to upload recordings
-&nbsp; | `browser` | The Replay browser to use (either `replay-firefox` or `replay-chromium`)
-&nbsp; | `command` | The command to run your cypress tests | `npx cypress run`
-&nbsp; | `public` | When true, make replays public on upload | `false`
-&nbsp; | `upload-all` | Upload all recordings instead of only recordings of failed tests | `false`
-&nbsp; | `working-directory` | The relative working directory for the app | `.`
-&nbsp; | `test-run-id` | Uses the provided UUID to group the tests instead of generating its own.  | `.`
+| Required           | Name                | Description                                                              | Default           |
+| ------------------ | ------------------- | ------------------------------------------------------------------------ | ----------------- |
+| :white_check_mark: | `api-key`           | The Replay API Key used to upload recordings                             |
+| &nbsp;             | `browser`           | The Replay browser to use (either `replay-firefox` or `replay-chromium`) |
+| &nbsp;             | `command`           | The command to run your cypress tests                                    | `npx cypress run` |
+| &nbsp;             | `public`            | When true, make replays public on upload                                 | `false`           |
+| &nbsp;             | `upload-all`        | Upload all recordings instead of only recordings of failed tests         | `false`           |
+| &nbsp;             | `working-directory` | The relative working directory for the app                               | `.`               |
+| &nbsp;             | `test-run-id`       | Uses the provided UUID to group the tests instead of generating its own. | `.`               |
 
 > **Note:** This action appends arguments to your `command` to configure a
 > custom reporter. If you're using a command like `npm run cy:run` to run your
@@ -57,7 +57,7 @@ Required | Name | Description | Default
 > pass to Cypress.
 
 ## Complete Workflow Example
-        
+
 ```yaml
 # .github/workflow/ci.yml
 name: Cypress Tests
@@ -77,7 +77,6 @@ jobs:
     runs-on: ubuntu-latest
     needs: test-run-id
     steps:
-
       - name: Checkout
         uses: actions/checkout@v3
 
@@ -94,13 +93,13 @@ jobs:
           path: ~/.cache/Cypress
           key: my-cache-${{ runner.os }}-${{ hashFiles('package-lock.json') }}
 
-      - uses: replayio/action-cypress@v0.2.7
+      - uses: replayio/action-cypress@v0.3.0
         with:
           # An API key (usually a Team API Key) to use to upload replays.
           # Configure this via GitHub repo settings.
           api-key: ${{ secrets.RECORD_REPLAY_API_KEY }}
           # The Replay browser to use: 'replay-firefox' or 'replay-chromium'
-          browser: 'replay-chromium'
+          browser: "replay-chromium"
           # An optional command to run your tests.
           command: npm run test:e2e -- --
           # When true, replays will be accessible to anyone with the link.
